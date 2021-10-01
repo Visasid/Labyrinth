@@ -129,6 +129,8 @@ void UpdateScreen()
 	mapUnlocks[playerY][playerX - 1] = true;
 	mapUnlocks[playerY - 1][playerX] = true;
 	mapUnlocks[playerY - 1][playerX - 1] = true;
+	mapUnlocks[playerY + 1][playerX - 1] = true;
+	mapUnlocks[playerY - 1][playerX + 1] = true;
 	//Вывод на экран
 	for (int i = 0; i < 10; i++)
 	{
@@ -191,7 +193,12 @@ void StartGame()
 			}
 		}
 		//Прошел ли игрок лабиринт
-		if (playerX == 29) break;
+		if (playerX == 29) 
+		{
+			system("cls");
+			cout << "Лабиринт пройден!\n\n";
+			break;
+		}
 	}
 }
 
