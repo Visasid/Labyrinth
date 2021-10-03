@@ -111,6 +111,7 @@ void LevelGenerate()
 		{
 			map[i][1] = PLAYER;
 			playerY = i;
+			playerX = 1;
 			break;
 		}
 	}
@@ -214,11 +215,21 @@ void LoadLevel(string levelName)
 	}
 	else
 	{
+		//Очитска карты
+		for (int i = 0; i < 10; i++)
+		{
+			for (int j = 0; j < 30; j++)
+			{
+				map[i][j] = ' ';
+			}
+		}
+		//Загрузка карты
 		for (int i = 0; i < 10; i++)
 		{
 			for (int j = 0; j < 30; j++)
 			{
 				file >> map[i][j];
+				if (map[i][j] == '-') map[i][j] = ' ';
 			}
 		}
 		//Помещаем игрока
@@ -228,6 +239,7 @@ void LoadLevel(string levelName)
 			{
 				map[i][1] = PLAYER;
 				playerY = i;
+				playerX = 1;
 				break;
 			}
 		}
