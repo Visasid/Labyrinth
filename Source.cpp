@@ -94,7 +94,9 @@ void LevelGenerate()
 			{
 				for (int j = 0; j < 30; j++)
 				{
+					if (map[i][j] == ' ') map[i][j] = '-';
 					saveFile << map[i][j];
+					if (map[i][j] == '-') map[i][j] = ' ';
 				}
 				saveFile << endl;
 			}
