@@ -8,14 +8,17 @@
 using namespace std;
 
 char input = 0;
-enum Fillers { ROCK = 35, PLAYER = 164, TELEPORT = 169 };
+enum Fillers { ROCK = 35, PLAYER = 164, ENEMY = 169 };
 enum Directions { LEFT = 97, RIGHT = 100, UP = 119, DOWN = 115, QUIT = 113 };
+int mapY = 10, mapX = 30;
 char map[10][30];
 bool mapUnlocks[10][30] = {false};
 int wormX = 1;
 int wormY = 4;
 int playerX = 1;
 int playerY;
+int enemyX, enemyY;
+bool isDead = false;
 
 void LevelGenerate() 
 {
@@ -58,7 +61,7 @@ void LevelGenerate()
 		{
 			if (map[wormY+1][wormX] == ROCK)
 			{
-				if (wormY != 8) 
+				if (wormY != mapY - 2) 
 				{
 					wormY++;
 					map[wormY][wormX] = ' ';
@@ -106,6 +109,18 @@ void LevelGenerate()
 
 	}
 
+	//Создаем врага
+	for (int i = 0; i < 10; i++)
+	{
+		if (map[i][15] == ' ')
+		{
+			map[i][15] = ENEMY;
+			enemyY = i;
+			enemyX = 15;
+			break;
+		}
+	}
+
 	//Помещаем игрока
 	for (int i = 0; i < 10; i++)
 	{
@@ -116,6 +131,54 @@ void LevelGenerate()
 			playerX = 1;
 			break;
 		}
+	}
+}
+
+void EnemyMove()
+{
+	int moveTo = rand() % 4; // 0 - Вверх, 1 - Вправо, 2 - Вниз, 3 - Влево
+	if (moveTo == 0)
+	{
+		if (map[enemyY - 1][enemyX] != ROCK)
+		{
+			map[enemyY][enemyX] = ' ';
+			enemyY--;
+			map[enemyY][enemyX] = ENEMY;
+		}
+		else if (map[enemyY - 1][enemyX] == PLAYER) isDead = true;
+	}
+	if (moveTo == 1)
+	{
+		if (map[enemyY][enemyX + 1] < 30) 
+		{
+			if (map[enemyY][enemyX + 1] != ROCK)
+			{
+				map[enemyY][enemyX] = ' ';
+				enemyX++;
+				map[enemyY][enemyX] = ENEMY;
+			}
+			else if (map[enemyY][enemyX + 1] == PLAYER) isDead = true;
+		}
+	}
+	if (moveTo == 2)
+	{
+		if (map[enemyY + 1][enemyX] != ROCK)
+		{
+			map[enemyY][enemyX] = ' ';
+			enemyY++;
+			map[enemyY][enemyX] = ENEMY;
+		}
+		else if (map[enemyY + 1][enemyX] == PLAYER) isDead = true;
+	}
+	if (moveTo == 3)
+	{
+		if (map[enemyY][enemyX - 1] != ROCK)
+		{
+			map[enemyY][enemyX] = ' ';
+			enemyX--;
+			map[enemyY][enemyX] = ENEMY;
+		}
+		else if (map[enemyY][enemyX - 1] == PLAYER) isDead = true;
 	}
 }
 
@@ -144,6 +207,7 @@ void UpdateScreen()
 		}
 		cout << endl;
 	}
+	EnemyMove(); //Движение врага
 }
 
 void StartGame() 
@@ -200,6 +264,13 @@ void StartGame()
 		{
 			system("cls");
 			cout << "Лабиринт пройден!\n\n";
+			break;
+		}
+		if (isDead) 
+		{
+			isDead = false;
+			system("cls");
+			cout << "Вы погибли!\n\n";
 			break;
 		}
 	}
