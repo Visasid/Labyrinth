@@ -110,6 +110,7 @@ void LevelGenerate()
 	}
 
 	//Создаем врага
+	/*
 	for (int i = 0; i < 10; i++)
 	{
 		if (map[i][15] == ' ')
@@ -119,7 +120,7 @@ void LevelGenerate()
 			enemyX = 15;
 			break;
 		}
-	}
+	}*/
 
 	//Помещаем игрока
 	for (int i = 0; i < 10; i++)
@@ -207,7 +208,7 @@ void UpdateScreen()
 		}
 		cout << endl;
 	}
-	EnemyMove(); //Движение врага
+	//EnemyMove(); //Движение врага
 }
 
 void StartGame() 
